@@ -1,0 +1,125 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Grids,
+  VclTee.TeeGDIPlus, VCLTee.TeEngine, VCLTee.Series, Vcl.ExtCtrls,
+  VCLTee.TeeProcs, VCLTee.Chart, ComObj;
+
+type
+  TForm1 = class(TForm)
+    Button1: TButton;
+    Button2: TButton;
+    StringGrid1: TStringGrid;
+    Button3: TButton;
+    OpenDialog1: TOpenDialog;
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+  flag: boolean;
+  x, y: array [0..4] of real;
+  U: array [0..4, 0..4] of real;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.Button1Click(Sender: TObject);
+var
+  dx, t, t0, d: real;
+  i, j, n: integer;
+begin
+  n := 4;
+  dx := 1;
+  flag := True;
+
+  for i := 0 to n do
+  begin
+    x[i] := i;
+    y[i] := i;
+    stringgrid1.Cells[i+1, 0] := floattostr(x[i]);
+    stringgrid1.Cells[0, i+1] := floattostr(y[i]);
+  end;
+
+  for i := 0 to n do
+  for j := 0 to n do
+  begin
+    if (i = 0) or (i = 4) or (j = 0) or (j = 4)
+      then U[i, j] := sqr(x[i])+sqr(y[j])
+      else U[i, j] := 1;
+    stringgrid1.Cells[j+1, i+1] := floattostr(U[i, j]);
+  end;
+
+  t := 0;
+  t0 := 100;
+  while (t <= t0) and flag do
+  begin
+    for i := 1 to n-1 do
+    for j := 1 to n-1 do
+    begin
+      U[i, j] := (U[i-1, j] + U[i+1, j] + U[i, j-1] + U[i, j+1]) / (4 * dx);
+      stringgrid1.Cells[j+1, i+1] := floattostr(U[i, j]);
+    end;
+
+    t := t + 1;
+  end;
+
+end;
+
+procedure TForm1.Button2Click(Sender: TObject);
+begin
+  flag := False;
+end;
+
+procedure TForm1.Button3Click(Sender: TObject);
+var
+  i, j, n: integer;
+  exApp, exBook, exSh : OleVariant;
+  Od : TOpenDialog;
+begin
+  n := 4;
+  //Диалог выбора файла.
+  Od := OpenDialog1; //OpenDialog1 уже должен быть на форме.
+  if Od.InitialDir = '' then //В качестве начальной выбираем папку, в которой лежит исполняемый файл программы.
+    Od.InitialDir := ExtractFilePath(ParamStr(0));
+  if not Od.Execute then //Диалог выбора файла.
+    Exit;
+  if not FileExists(Od.FileName) then //Проверка существования файла.
+  begin
+    MessageBox(Handle, 'Файл с заданным именем не найден! Действие отменено.',
+      'Внимание!', MB_OK + MB_ICONEXCLAMATION + MB_APPLMODAL);
+    Exit;
+  end;
+
+  //Запуск экземпляра Excel и получение ссылки на интерфейс корневого объекта (Excel.Application).
+  exApp := CreateOleObject('Excel.Application');
+  //Делаем видимым окно MS Excel. На время отладки или на постоянной основе.
+  exApp.Visible := True;
+  //Открываем раб. книгу и получаем ссылку на её интерфейс.
+  exBook := exApp.Workbooks.Open(FileName:=Od.FileName);
+  //Ссылка на интерфейс первого листа рабочей книги.
+  exSh := exBook.Worksheets[1];
+
+  //Запись текста в ячейку на третьей строке и втором столбце:
+  //exSh.Cells[3, 2].Value := 'Этот текст записан в ячейку с адресом: ' + exSh.Cells[3, 2].Address;
+  for i := 0 to n do
+  for j := 0 to n do
+  begin
+    exSh.Cells[i+2, j+2].Value := floattostr(U[i, j]);
+  end;
+
+  //exBook.Close; //Закрываем рабочую книгу.
+  //exApp.Quit;   //Закрываем MS Excel
+end;
+
+end.

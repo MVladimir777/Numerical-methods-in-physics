@@ -1,0 +1,113 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, VclTee.TeeGDIPlus, VCLTee.TeEngine,
+  VCLTee.Series, Vcl.ExtCtrls, VCLTee.TeeProcs, VCLTee.Chart, Vcl.StdCtrls, Math;
+
+type
+  TForm1 = class(TForm)
+    Button1: TButton;
+    Chart1: TChart;
+    Series1: TLineSeries;
+    Label1: TLabel;
+    Edit1: TEdit;
+    Label2: TLabel;
+    Edit2: TEdit;
+    Button2: TButton;
+    Label3: TLabel;
+    Edit3: TEdit;
+    Label4: TLabel;
+    Edit4: TEdit;
+    Label5: TLabel;
+    Edit5: TEdit;
+    Label6: TLabel;
+    Edit6: TEdit;
+    Label7: TLabel;
+    Edit7: TEdit;
+    Label8: TLabel;
+    Edit8: TEdit;
+    Label9: TLabel;
+    Edit9: TEdit;
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+  flag:boolean;
+  U, Un: array of double;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.Button1Click(Sender: TObject);
+var
+  a, b, k1, k2, dt, t_min, t_max, dx, t, x: double;
+  time, n, i: integer;
+begin
+  a := strtofloat(edit1.Text);
+  b := strtofloat(edit2.Text);
+  n := strtoint(edit3.Text);
+  k1 := strtofloat(edit4.Text);
+  k2 := strtofloat(edit5.Text);
+  time := strtoint(edit6.Text);
+  dt := strtofloat(edit7.Text);
+  t_min := strtofloat(edit8.Text);
+  t_max := strtofloat(edit9.Text);
+
+  flag := True;
+  Setlength(U, n);
+  Setlength(Un, n);
+  dx := (b - a) / n;
+  x := a;
+
+  for i := 0 to n do
+  begin
+    U[i] := sin(pi * x);
+    x := x + dx;
+  end;
+
+  Un := U;
+  t := 0;
+
+  while (t <= time) and flag do
+  begin
+    for i := 1 to n-1 do
+    begin
+      Un[i] := U[i] + (U[i+1] - 2*U[i] + U[i-1]) * sqr(k1) * dt / sqr(dx)
+        + k2 * U[i] * dt;
+    end;
+
+    un[0] := t_min;
+    un[n] := t_max;
+    U := Un;
+
+    Series1.Clear;
+    x := a;
+
+    for i := 0 to n do
+    begin
+      Series1.AddXY(x, U[i]);
+      x := x + dx;
+    end;
+
+    Application.ProcessMessages;
+    t := t + dt;
+   end;
+
+end;
+
+procedure TForm1.Button2Click(Sender: TObject);
+begin
+  flag := False;
+end;
+
+end.

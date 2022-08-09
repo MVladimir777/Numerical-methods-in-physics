@@ -1,0 +1,76 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, VclTee.TeeGDIPlus, VCLTee.TeEngine,
+  VCLTee.Series, Vcl.ExtCtrls, VCLTee.TeeProcs, VCLTee.Chart, Vcl.StdCtrls;
+
+const
+  n = 100;
+  a = 0;
+  b = 1;
+  dx = (b-a)/n;
+  k = 0.01;
+  dt = 0.1*(dx*dx)/k;
+  t_min = 0;
+  t_max = 0;
+  time_max = 100;
+
+type
+  TForm1 = class(TForm)
+    Button1: TButton;
+    Chart1: TChart;
+    Series1: TLineSeries;
+    procedure Button1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+  U, un: array [1..n] of double;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.Button1Click(Sender: TObject);
+var i: integer;
+    t,x: double;
+begin
+  x:=a;
+  for i:=1 to n do
+   begin
+     U[i]:=sin(3.14* x);
+     x := x + dx;
+   end;
+   un:=U;
+   t:=0;
+   while t <=time_max do
+   begin
+     for i:=2 to n-1 do
+     begin
+       un[i]:= U[i] + (k*(U[i+1] -2*U[i] + U[i-1])/sqr(dx))*dt;
+     end;
+     un[1]:=t_min;
+     un[n]:=t_max;
+     U:=un;
+
+     Series1.Clear;
+     x:=a;
+     for i:=1 to n do
+     begin
+        Series1.AddXY(x, U[i]);
+        x := x + dx;
+     end;
+      Application.ProcessMessages;
+      t := t + dt;
+   end;
+
+end;
+
+end.
