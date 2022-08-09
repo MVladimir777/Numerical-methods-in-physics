@@ -1,0 +1,67 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, VclTee.TeeGDIPlus,
+  VCLTee.TeEngine, VCLTee.Series, Vcl.ExtCtrls, VCLTee.TeeProcs, VCLTee.Chart, Math;
+
+type
+  TForm1 = class(TForm)
+    Button1: TButton;
+    Label1: TLabel;
+    Edit1: TEdit;
+    Chart1: TChart;
+    Series1: TLineSeries;
+    Series2: TLineSeries;
+    procedure Button1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+function f (x : real): real;
+begin
+  f := -sin(x) - 0.2;
+end;
+
+procedure TForm1.Button1Click(Sender: TObject);
+var
+  a, b, e,dx,x:real;
+  n, i:integer;
+begin
+  a := -1;
+  b := 3;
+  e := 0.0001;
+  n := 100;
+
+  dx := (b-a)/n;
+  for i := 0 to n do
+  begin
+    x := a + dx*i;
+    series1.addxy(x, sin(x) + x + 0.2);
+    series2.addxy(x, 0);
+  end;
+
+  x := a;
+  while abs(f(x) - x) >= e do
+  begin
+    x := f(x);
+  end;
+  edit1.Text := floattostr(x);
+
+
+
+
+end;
+
+end.

@@ -1,0 +1,158 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = #1050#1086#1088#1110#1085#1100' '#1088#1110#1074#1085#1103#1085#1085#1103' '#1084#1077#1090#1086#1076#1086#1084' '#1076#1080#1093#1086#1090#1086#1084#1110#1111
+  ClientHeight = 401
+  ClientWidth = 770
+  Color = clSilver
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label1: TLabel
+    Left = 558
+    Top = 14
+    Width = 74
+    Height = 19
+    Caption = #1051#1110#1074#1072' '#1084#1077#1078#1072
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object Label2: TLabel
+    Left = 545
+    Top = 39
+    Width = 87
+    Height = 19
+    Caption = #1055#1088#1072#1074#1072' '#1084#1077#1078#1072
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object Label3: TLabel
+    Left = 586
+    Top = 301
+    Width = 49
+    Height = 19
+    Caption = #1050#1086#1088#1110#1085#1100
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object Label4: TLabel
+    Left = 623
+    Top = 64
+    Width = 9
+    Height = 19
+    Caption = 'n'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object Label5: TLabel
+    Left = 623
+    Top = 91
+    Width = 8
+    Height = 19
+    Caption = 'e'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object Edit1: TEdit
+    Left = 641
+    Top = 14
+    Width = 121
+    Height = 21
+    TabOrder = 0
+    Text = '0'
+  end
+  object Edit2: TEdit
+    Left = 641
+    Top = 41
+    Width = 121
+    Height = 21
+    TabOrder = 1
+    Text = '2'
+  end
+  object Button1: TButton
+    Left = 586
+    Top = 187
+    Width = 149
+    Height = 25
+    Caption = 'Start'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 2
+    OnClick = Button1Click
+  end
+  object Chart1: TChart
+    Left = 8
+    Top = 8
+    Width = 521
+    Height = 385
+    Legend.Visible = False
+    Title.Text.Strings = (
+      'TChart')
+    Title.Visible = False
+    View3D = False
+    TabOrder = 3
+    DefaultCanvas = 'TGDIPlusCanvas'
+    ColorPaletteIndex = 13
+    object Series1: TLineSeries
+      Brush.BackColor = clDefault
+      Pointer.InflateMargins = True
+      Pointer.Style = psRectangle
+      XValues.Name = 'X'
+      XValues.Order = loAscending
+      YValues.Name = 'Y'
+      YValues.Order = loNone
+    end
+  end
+  object Edit3: TEdit
+    Left = 641
+    Top = 303
+    Width = 121
+    Height = 21
+    TabOrder = 4
+  end
+  object Edit4: TEdit
+    Left = 641
+    Top = 68
+    Width = 121
+    Height = 21
+    TabOrder = 5
+    Text = '100'
+  end
+  object Edit5: TEdit
+    Left = 641
+    Top = 95
+    Width = 121
+    Height = 21
+    TabOrder = 6
+    Text = '0,01'
+  end
+end
