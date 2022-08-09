@@ -1,0 +1,84 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, VclTee.TeeGDIPlus, VCLTee.TeEngine,
+  VCLTee.Series, Vcl.StdCtrls, Vcl.ExtCtrls, VCLTee.TeeProcs, VCLTee.Chart;
+
+type
+  TForm1 = class(TForm)
+    Chart1: TChart;
+    Button1: TButton;
+    Label1: TLabel;
+    Edit1: TEdit;
+    Series1: TLineSeries;
+    Label2: TLabel;
+    Edit2: TEdit;
+    Label3: TLabel;
+    Edit3: TEdit;
+    Label4: TLabel;
+    Edit4: TEdit;
+    Label5: TLabel;
+    Edit5: TEdit;
+    Label6: TLabel;
+    Edit6: TEdit;
+    Label7: TLabel;
+    Edit7: TEdit;
+    Label8: TLabel;
+    Edit8: TEdit;
+    Button2: TButton;
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+  flag: boolean;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.Button1Click(Sender: TObject);
+var
+  y, y0, z, k, v1, v2, dt, t, zz: real;
+begin
+  y := strtofloat(edit1.Text);
+  y0 := strtofloat(edit2.Text);
+  z := strtofloat(edit3.Text);
+  k := strtofloat(edit4.Text);
+  v1 := strtofloat(edit5.Text);
+  v2 := strtofloat(edit6.Text);
+  dt := strtofloat(edit7.Text);
+
+  series1.Clear;
+
+  flag := True;
+  t := 0;
+  while (y > y0) and flag do
+  begin
+    series1.AddXY(t, y);
+    Application.ProcessMessages;
+    t := t + dt;
+    if t < 5
+      then zz := z + v1 * t
+      else zz := (z + v1 * t) + v2 * (t - 5);
+    y := y - k * (y - zz) * dt;
+  end;
+
+  edit8.Text:=floattostr(t);
+
+end;
+
+procedure TForm1.Button2Click(Sender: TObject);
+begin
+  flag := False;
+end;
+
+end.

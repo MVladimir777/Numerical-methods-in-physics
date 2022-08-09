@@ -1,0 +1,69 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, VclTee.TeeGDIPlus, VCLTee.TeEngine,
+  VCLTee.Series, Vcl.StdCtrls, Vcl.ExtCtrls, VCLTee.TeeProcs, VCLTee.Chart;
+
+type
+  TForm1 = class(TForm)
+    Chart1: TChart;
+    Button1: TButton;
+    Label1: TLabel;
+    Edit1: TEdit;
+    Series1: TLineSeries;
+    Label2: TLabel;
+    Edit2: TEdit;
+    procedure Button1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.Button1Click(Sender: TObject);
+var
+y,y0,z,k,t,dz,dt,z1,tau:real;
+begin
+  y :=40;
+  y0:=20;
+  z := 9;
+  k := 0.25;
+  t := ln((y-z)/(y0-z))/k;
+  edit1.Text:=floattostr(t);
+
+  {dz := 0.5/3600;
+  dt :=0.01;
+  z1:= z;
+  tau:=0;
+  while y>y0 do
+  begin
+    y := y -k*(y-z)*dt;
+    tau:= tau +dt;
+    edit2.Text:=floattostr(tau);
+  end; }
+
+  dz := 0.5;
+  dt :=0.01;
+  z1:= z;
+  tau:=0;
+  while y>y0 do
+  begin
+    y := y -k*(y-z1)*dt;
+    tau:= tau +dt;
+    z1 :=z-dz*tau;
+    edit2.Text:=floattostr(tau);
+  end;
+
+end;
+
+end.

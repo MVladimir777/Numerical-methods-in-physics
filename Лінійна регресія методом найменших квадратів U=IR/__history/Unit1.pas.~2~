@@ -1,0 +1,94 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, VclTee.TeeGDIPlus, VCLTee.TeEngine,
+  Vcl.ExtCtrls, VCLTee.TeeProcs, VCLTee.Chart, Vcl.StdCtrls, VCLTee.Series;
+
+type
+  TForm1 = class(TForm)
+    Button1: TButton;
+    Chart1: TChart;
+    Series1: TLineSeries;
+    Series2: TPointSeries;
+    Series3: TLineSeries;
+    Edit1: TEdit;
+    procedure Button1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.Button1Click(Sender: TObject);
+var
+  r0, x1, x2, a, b, c, d, dx, x, u, r, p, k, z:real;
+  i:integer;
+begin
+  r0 := 5;
+  x1 := 0;
+  x2 := 10;
+  dx := 0.25;
+
+  series1.Clear;
+  series2.Clear;
+  series3.Clear;
+
+  i := 0;
+  x := 0;
+  while x < x2 do
+  begin
+    x := x1 + dx * i;
+    u := x * r0;
+    series1.addxy(x, u);
+    i := i + 1;
+  end;
+
+  a := 0;
+  b := 0;
+  c := 0;
+  d := 0;
+
+  p := 0.3;
+  i := 0;
+  x := 0;
+  while x < x2 do
+  begin
+    x := x1 + dx * i;
+    r := r0 +  p * (2 * random - 1) * r0;
+    u := x * r;
+    series2.addxy(x, u);
+    a := a + x;
+    b := b + u;
+    c := c + x * x;
+    d := d + x * u;
+    i := i + 1;
+
+  end;
+
+  k := (a * b - (i-1) * d) / (a * a - (i-1) * c);
+  z := (b - k * a) / (i-1);
+
+  i := 0;
+  x := 0;
+  while x < x2 do
+  begin
+    x := x1 + dx * i;
+    u := z + k * x;
+    series3.addxy(x, u);
+    i := i + 1;
+  end;
+
+  edit1.Text := floattostr(k);
+end;
+
+end.
