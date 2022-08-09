@@ -1,0 +1,63 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, VclTee.TeeGDIPlus, VCLTee.TeEngine,
+  Vcl.ExtCtrls, VCLTee.TeeProcs, VCLTee.Chart, Vcl.StdCtrls, VCLTee.Series;
+
+type
+  TForm1 = class(TForm)
+    Chart1: TChart;
+    Button1: TButton;
+    Series1: TLineSeries;
+    Label1: TLabel;
+    Edit1: TEdit;
+    Label2: TLabel;
+    Edit2: TEdit;
+    Series2: TLineSeries;
+    procedure Button1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.Button1Click(Sender: TObject);
+var a, b, c, h, k, pi, x, dx, f1, f2:real;
+  t1, t2:integer;
+begin
+  a := strtofloat(edit1.Text);
+  b := strtofloat(edit2.Text);
+  c := 3E8;
+  h := 6.6E-34;
+  k := 1.38E-23;
+  pi := 3.14159;
+  t1 := 1000;
+  t2 := 2000;
+
+  x := a;
+  dx := 1;
+  series1.Clear;
+  series2.Clear;
+  lineseries1.Clear;
+  while x < b do
+  begin
+    x := x + dx;
+    f1 := (2*pi*c*c*h/(x*x*x*x*x*1E-45))/(exp(h*c/(k*t1*x*1E-9))-1);
+    series1.AddXY(x, f1);
+    f2 := (2*pi*c*c*h/(x*x*x*x*x*1E-45))/(exp(h*c/(k*t2*x*1E-9))-1);
+    series2.AddXY(x, f2);
+  end;
+
+end;
+
+end.

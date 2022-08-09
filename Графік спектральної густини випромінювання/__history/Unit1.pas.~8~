@@ -1,0 +1,63 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, VclTee.TeeGDIPlus, VCLTee.TeEngine,
+  Vcl.ExtCtrls, VCLTee.TeeProcs, VCLTee.Chart, Vcl.StdCtrls, VCLTee.Series;
+
+const
+  c = 3E8;
+  h = 6.6E-34;
+  k = 1.38E-23;
+  pi = 3.14159;
+
+type
+  TForm1 = class(TForm)
+    Chart1: TChart;
+    Button1: TButton;
+    Series1: TLineSeries;
+    Label1: TLabel;
+    Edit1: TEdit;
+    Label2: TLabel;
+    Edit2: TEdit;
+    Label3: TLabel;
+    Edit3: TEdit;
+    Label4: TLabel;
+    ComboBox1: TComboBox;
+    procedure Button1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+  l, r, x, dx, f:real;
+  n, t, i:integer;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  l := strtofloat(edit1.Text);
+  r := strtofloat(edit2.Text);
+  n := strtoint(edit3.Text);
+  t := strtoint(combobox1.Text);
+
+  series1.Clear;
+  dx := (r-l)/n;
+  for i := 0 to n do
+  begin
+    x := l + dx*i;
+    f := (2*pi*c*c*h/(x*x*x*x*x*1E-45))/(exp(h*c/(k*t*x*1E-9))-1);
+    series1.AddXY(x, f);
+  end;
+
+end;
+
+end.

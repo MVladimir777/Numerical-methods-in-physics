@@ -1,0 +1,68 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Math, VclTee.TeeGDIPlus,
+  VCLTee.TeEngine, VCLTee.Series, Vcl.ExtCtrls, VCLTee.TeeProcs, VCLTee.Chart;
+
+type
+  TForm1 = class(TForm)
+    Button1: TButton;
+    Chart1: TChart;
+    Series1: TLineSeries;
+    Edit1: TEdit;
+    procedure Button1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+function f(t, x:real): real;
+begin
+  f := 64.77 * power(x,-5) * power(t,-4) / (exp(1.432 / (t * x)) - 1);
+end;
+
+procedure TForm1.Button1Click(Sender: TObject);
+var
+  t1, t2, x1, x2, dt, t, dx, x, s, qq:real;
+  n, i, j:integer;
+begin
+  t1 := 0;
+  t2 := 3000;
+  x1 := 400e-9;
+  x2 := 700e-9;
+  n := 100;
+
+  dt := (t2 - t1) / n;
+  for i := 0 to n do
+  begin
+    t := t1 + dt * i;
+
+    s := 0;
+
+    dx := (x2 - x1) / n;
+    for j := 1 to n-1 do
+    begin
+      x := x1 + dx * j;
+      qq := f(t, x);
+      if j mod 2 = 0
+      then s := s + 2*f(t, x)
+      else s := s + 4*f(t, x);
+    end;
+    s := (s + f(t, x1) + f(t, x2)) * dx / 3;
+  end;
+
+  edit1.text := floattostr(s);
+end;
+
+end.

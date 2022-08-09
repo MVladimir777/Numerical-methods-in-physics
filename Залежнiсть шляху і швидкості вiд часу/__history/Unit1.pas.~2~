@@ -1,0 +1,59 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, VclTee.TeeGDIPlus, Vcl.StdCtrls,
+  VCLTee.TeEngine, Vcl.ExtCtrls, VCLTee.TeeProcs, VCLTee.Chart, VCLTee.Series;
+
+type
+  TForm1 = class(TForm)
+    Chart1: TChart;
+    Button1: TButton;
+    Label1: TLabel;
+    Label2: TLabel;
+    Edit1: TEdit;
+    Edit2: TEdit;
+    Label3: TLabel;
+    Label4: TLabel;
+    Edit3: TEdit;
+    Edit4: TEdit;
+    Series1: TLineSeries;
+    Chart2: TChart;
+    Series2: TLineSeries;
+    procedure Button1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.Button1Click(Sender: TObject);
+var v0, a, s, v: real;
+  t0, t, i:integer;
+begin
+  v0 := strtofloat(edit1.Text);
+  a := strtofloat(edit2.Text);
+  t0 := strtoint(edit3.Text);
+  t := strtoint(edit4.Text);
+  series1.Clear;
+  series2.Clear;
+  for i := t0 to t do
+  begin
+    s := v0*i+a*i*i/2;
+    series1.AddXY(i, s);
+    v := v0+a*i;
+    series2.AddXY(i, v);
+  end;
+
+end;
+
+end.
